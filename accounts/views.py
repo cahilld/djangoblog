@@ -20,9 +20,11 @@ def login(request):
                                      password=form.cleaned_data['password'])
             if user is not None:
                 auth.login(request, user)
+                messages.success(request, "You have sucessfully logged in")
+                return redirect(profile)
             else:
-                form.add_error(None, "Your details are not valid")
-            return redirect(get_index)
+                form.add_error(None, "Your username or password are incorrect")
+
     else:
         form = UserLoginForm()
     
@@ -44,3 +46,6 @@ def register(request):
         form = UserRegistrationForm()
         
     return render(request, "register.html", {'form': form})
+    
+def profile(request):
+    return render(request, 'profile.html')
