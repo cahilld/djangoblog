@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import messages, auth
 from .forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,11 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 messages.success(request, "You have sucessfully logged in")
-                return redirect(profile)
+                if request.GET and request.GET['next'] !='':
+                    next = request.GET['next']
+                    return HttpResponseRedirect(next)
+                else:
+                    return redirect(profile)
             else:
                 form.add_error(None, "Your username or password are incorrect")
 
@@ -47,6 +51,6 @@ def register(request):
         form = UserRegistrationForm()
         
     return render(request, "register.html", {'form': form})
-@login_required(login_url='/accounts/login')
+@login_required()
 def profile(request):
     return render(request, 'profile.html')
