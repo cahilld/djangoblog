@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contacts Django</title>
+</head>
+<body>
+    <h1>My Contacts</h1>
+
+<!--login register and logout links-->
+    <ul>
+        {% if request.user.is_authenticated %}
+        <li><a href="/logout">Logout</a></li>
+        {% else %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+        {% endif %}
+    </ul>
+    
+<!--if user is not logged n then dont display you are logged in-->
+        {% if request.user.is_authenticated %}
+            <p>You are logged in as {{ request.user.email }}</p>
+        {% endif %}
+        
+<!--list of contacts-->
+    <ul>
+        {% for contact in contacts %}
+        <li>{{ contact }}</li>
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>
