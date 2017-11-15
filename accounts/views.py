@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages, auth
 from .forms import UserLoginForm, UserRegistrationForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def get_index(request):
@@ -46,6 +47,6 @@ def register(request):
         form = UserRegistrationForm()
         
     return render(request, "register.html", {'form': form})
-    
+@login_required(login_url='/accounts/login')
 def profile(request):
     return render(request, 'profile.html')
