@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'blogapp',
+    'django_forms_bootstrap'
 ]
 
 MIDDLEWARE = [
