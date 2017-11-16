@@ -1,3 +1,5 @@
+# Accounts URLS
+
 from django.conf.urls import url
 from .views import logout, login, register, profile
 
