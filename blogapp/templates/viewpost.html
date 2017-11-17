@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-2 col-sm-3 text-center">
             <a class="story-img" href="#">
-                <img src="http://via.placeholder.com/100x100"
+                <img src="{{ MEDIA_URL }}{{ post.author.profile.image }}"
                      style="width:100px; height: 100px; background-color: #12ABB2; color: #ffffff;" class="img-circle">
             </a>
         </div>
@@ -18,7 +18,7 @@
                     <p>{{ post.content }}</p>
                     <button class="btn btn-default" onclick="location.href='{% url 'index' %}'">Back To Blog</button>
                     <button class="btn btn-default" onclick="location.href='{% url 'editpost' post.id %}'">Edit</button>
-                    <p>{{ post.published_date }}</p>
+                    <p>{{ post.published_date }} | Views {{ post.views }}</p>
                 </div>
             </div>
         </div>

@@ -7,11 +7,13 @@ from .forms import BlogPostForm
 
 # Create your views here.
 def blogapp(request):
-    blogpost = Post.objects.all()
+    blogpost = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'blogapp.html', {'posts':blogpost})
     
 def viewpost(request, id):
     post = get_object_or_404(Post, pk=id)
+    post.views += 1
+    post.save()
     return render(request, 'viewpost.html', {'post':post})
     
 @login_required()
