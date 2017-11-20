@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Post, Comment
 from django.utils import timezone
-from .forms import BlogPostForm
+from .forms import BlogPostForm, BlogCommentForm
 
 # Create your views here.
 def blogapp(request):
@@ -13,8 +13,8 @@ def blogapp(request):
 def viewpost(request, id):
     this_post = get_object_or_404(Post, pk=id)
     comments = Comment.objects.filter(post=this_post)
-
-    return render(request, "viewpost.html", {'post': this_post, 'comments': comments})
+    form = BlogCommentForm()
+    return render(request, "viewpost.html", {'post': this_post, 'comments': comments, 'form':form})
     
 @login_required()
 def newpost(request):
@@ -43,3 +43,15 @@ def editpost(request, id):
     else:
         form = BlogPostForm(instance=post)
     return render(request, 'postform.html', {'form':form})
+    
+def addcomment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    form=BlogCommentForm(request.POST)
+    if form.is_valid():
+        comment=form.save(commit=False)
+        
+        comment.author=request.user
+        comment.post=post
+        comment.published_date = timezone.now()
+        comment.save()
+        return redirect("viewpost", post_id)
