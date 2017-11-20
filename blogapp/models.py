@@ -18,10 +18,23 @@ class Post(models.Model):
     views = models.IntegerField(default=0)
     tag = models.CharField(max_length=30, blank=True, null=True)
     image = models.ImageField(upload_to="images", blank=True, null=True)
-
+    
     def publish(self):
         self.published_date = timezone.now()
         self.save()
 
+# names the post as a strong in the admin panel
+    def __str__(self):
+        return self.title
+        
+class Comment(models.Model):
+    author = models.ForeignKey('auth.User')
+    post = models.ForeignKey(Post, related_name='comments')
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    approved = models.BooleanField(blank=False, default=False)
+
+# names the post as a strong in the admin panel
     def __str__(self):
         return self.title

@@ -1,7 +1,7 @@
 # Blogapp Views
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post, Comment
 from django.utils import timezone
 from .forms import BlogPostForm
 
@@ -11,10 +11,10 @@ def blogapp(request):
     return render(request, 'blogapp.html', {'posts':blogpost})
     
 def viewpost(request, id):
-    post = get_object_or_404(Post, pk=id)
-    post.views += 1
-    post.save()
-    return render(request, 'viewpost.html', {'post':post})
+    this_post = get_object_or_404(Post, pk=id)
+    comments = Comment.objects.filter(post=this_post)
+
+    return render(request, "viewpost.html", {'post': this_post, 'comments': comments})
     
 @login_required()
 def newpost(request):

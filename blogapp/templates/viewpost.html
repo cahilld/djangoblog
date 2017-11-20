@@ -22,5 +22,8 @@
                 </div>
             </div>
         </div>
+        {% for comment in comments %}
+        {% include '_comment.html' %}
+        {% endfor %}
     </div>
 {% endblock %}
